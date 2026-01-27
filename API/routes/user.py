@@ -5,22 +5,3 @@ from API.models import User
 
 router = APIRouter(prefix="/user", tags=["User"])
 
-# Login
-
-# Expenses
-
-# Income
-
-# Goals
-
-# Categories
-
-# Budget
-
-# Bills 
-
-# Tips 
-
-# Overspending
-
-# Profile
