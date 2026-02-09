@@ -13,8 +13,8 @@ class User(Base):
 
     accounts = relationship("Account", back_populates="user")
     goals = relationship("Goal", back_populates="user")
-    budgets = relationship("Budget", back_populates="user")
-    recurring_payments = relationship("RecurringPayment", back_populates="user")
+    budget = relationship("Budget", back_populates="user")
+    recurring_payment = relationship("Recurring Payment", back_populates="user")
 
 
 class Account(Base):
@@ -39,9 +39,7 @@ class Transaction(Base):
     amount = Column(DECIMAL)
     description = Column(String)
     is_income = Column(Boolean)
-
     account_id = Column(Integer, ForeignKey("accounts.id"))
-    category_id = Column(Integer, ForeignKey("categories.id"))
 
     account = relationship("Account", back_populates="transactions")
     category = relationship("Category", back_populates="transactions")
@@ -55,9 +53,6 @@ class Budget(Base):
     year = Column(Integer)
     total_amt_planned = Column(DECIMAL)
 
-    user_id = Column(Integer, ForeignKey("users.id"))
-
-    user = relationship("User", back_populates="budgets")
     items = relationship("BudgetItem", back_populates="budget")
 
 
@@ -113,9 +108,6 @@ class RecurringPayment(Base):
     frequency = Column(String)
     is_active = Column(Boolean)
 
-    user_id = Column(Integer, ForeignKey("users.id"))
-
-    user = relationship("User", back_populates="recurring_payments")
     reminders = relationship("Reminder", back_populates="recurring_payment")
 
 
