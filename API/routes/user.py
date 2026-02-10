@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from API.DB.db import get_db
-from API.models import User
+from ..db import get_db
+from API.models import User, UserCreate
 from flask import Flask, request, jsonify
-from passlib.context import CryptContext
+from passlib.context import CryptContext #type: ignore
 from werkzeug.security import generate_password_hash
 import os
 
@@ -25,17 +25,17 @@ def login_user(email: str, password: str, db: Session = Depends(get_db)):
 
 # New user creation.
 @router.post("/create_user")
-def create_user(email: str, password: str, name: str, db: Session=Depends(get_db)):
-    existing = db.query(User).filter(User.email == email).first()
+def create_user(user: UserCreate, db: Session=Depends(get_db)):
+    existing = db.query(User).filter(User.email == user.email).first()
     if existing:
         raise HTTPException(status_code=400, detail="Email already in use.")
     
-    pass_hash = pwd_context.hash(password)
+    pass_hash = pwd_context.hash(user.password)
 
-    new_user = User(email=email, password_hash=pass_hash, name=name)
+    new_user = User(email=user.email, password_hash=pass_hash, name=user.name)
     db.add(new_user)
     db.commit()
-    db.refresh()
+    db.refresh(new_user)
 
-    return {"message": f"User {email} created."}
+    return {"message": f"User {user.email} created."}
     

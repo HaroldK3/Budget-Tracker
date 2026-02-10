@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, DECIMAL, Boolean
 from sqlalchemy.orm import relationship, declarative_base
-
-Base = declarative_base()
+from pydantic import BaseModel
+from API.db import Base
 
 class User(Base):
     __tablename__ = "users"
@@ -16,6 +16,10 @@ class User(Base):
     budgets = relationship("Budget", back_populates="user")
     recurring_payments = relationship("RecurringPayment", back_populates="user")
 
+class UserCreate(BaseModel):
+    email: str
+    password: str
+    name: str
 
 class Account(Base):
     __tablename__ = "accounts"
@@ -83,7 +87,7 @@ class Category(Base):
     is_default = Column(Boolean)
 
     budget_items = relationship("BudgetItem", back_populates="category")
-    transaction = relationship("Transaction", back_populates="category")
+    transactions = relationship("Transaction", back_populates="category")
 
 
 class Goal(Base):
