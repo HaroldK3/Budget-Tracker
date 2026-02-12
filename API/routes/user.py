@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..db import get_db
 from API.models import User, UserCreate
-from flask import Flask, request, jsonify
 from passlib.context import CryptContext #type: ignore
 from werkzeug.security import generate_password_hash
 import os
@@ -19,9 +18,9 @@ def login_user(email: str, password: str, db: Session = Depends(get_db)):
     
     # Password verification
     if not pwd_context.verify(password, user.password_hash):
-        raise HTTPException(status_code="400", detail="Incorrect Password.")
+        raise HTTPException(status_code=400, detail="Incorrect Password.")
     
-    return {"message": f"Welcome {user.name}."}
+    return {"message": f"Welcome {user.name}.", "user_id": user.id}  #Frontend has to store the UID to be able to pull the info. -KH
 
 # New user creation.
 @router.post("/create_user")

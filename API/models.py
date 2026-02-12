@@ -11,7 +11,6 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password_hash = Column(String)
 
-    accounts = relationship("Account", back_populates="user")
     goals = relationship("Goal", back_populates="user")
     budgets = relationship("Budget", back_populates="user")
     recurring_payments = relationship("RecurringPayment", back_populates="user")
@@ -20,20 +19,6 @@ class UserCreate(BaseModel):
     email: str
     password: str
     name: str
-
-class Account(Base):
-    __tablename__ = "accounts"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    type = Column(String)
-    starting_balance = Column(DECIMAL)
-
-    user_id = Column(Integer, ForeignKey("users.id"))
-    
-    user = relationship("User", back_populates="accounts")
-    transactions = relationship("Transaction", back_populates="account")
-
 
 class Transaction(Base):
     __tablename__ = "transactions"
@@ -44,10 +29,10 @@ class Transaction(Base):
     description = Column(String)
     is_income = Column(Boolean)
 
-    account_id = Column(Integer, ForeignKey("accounts.id"))
+    user_id = Column(Integer, ForeignKey("user.id"))
     category_id = Column(Integer, ForeignKey("categories.id"))
 
-    account = relationship("Account", back_populates="transactions")
+    account = relationship("User", back_populates="transactions")
     category = relationship("Category", back_populates="transactions")
 
 
