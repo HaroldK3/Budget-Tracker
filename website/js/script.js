@@ -23,7 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            alert(data.message);
+            alert("Login successful!");
+            window.location.href = "index.html";
         });
     }
 })

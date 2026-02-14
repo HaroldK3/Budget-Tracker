@@ -11,7 +11,7 @@ def create_tables():
 
 app.add_middleware(  #type: ignore bc pylance hates me
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
@@ -25,7 +25,3 @@ def root():
 @app.on_event("startup")
 def on_startup():
     create_tables()
-
-
-
-
