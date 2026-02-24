@@ -40,7 +40,6 @@ class TransactionCreate(BaseModel):
     amount: float
     description: str
     is_income: bool
-    account_id: int
     category_id: int
     user_id: int
 
