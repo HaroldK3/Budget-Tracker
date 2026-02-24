@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from API.db import Base, engine
 from API import models
-from API.routes import user
+from API.routes import user, transaction
 
 app = FastAPI()
 
@@ -18,6 +18,9 @@ app.add_middleware(  #type: ignore bc pylance hates me
 )
 
 app.include_router(user.router)
+app.include_router(transaction.router)
+
+
 @app.get("/")
 def root():
     return{"message": "Budget API running."}
