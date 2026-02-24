@@ -36,6 +36,14 @@ class Transaction(Base):
     user = relationship("User", back_populates="transactions")
     category = relationship("Category", back_populates="transactions")
 
+class TransactionCreate(BaseModel):
+    amount: float
+    desctiption: str
+    is_income: bool
+    account_id: int
+    category_id: int
+    user_id: int
+
 
 class Budget(Base):
     __tablename__ = "budgets"
