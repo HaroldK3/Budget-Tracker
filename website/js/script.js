@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
+            const isLoggedIn = localStorage.getItem("isLoggedIn");
 
             const url = new URL("http://127.0.0.1:8000/user/login");
             url.searchParams.append("email", email);
@@ -20,9 +21,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if(!res.ok)
             {
                 alert(data.detail || "Login failed");
+                console.log(isLoggedIn);
                 return;
             }
-
+            
+            localStorage.setItem("isLoggedIn", "true")
+            console.log(isLoggedIn);
             alert("Login successful!");
             window.location.href = "index.html";
         });
