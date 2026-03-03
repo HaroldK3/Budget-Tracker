@@ -27,4 +27,15 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "index.html";
         });
     }
+
+    function populateTable(dataArray)
+    {
+        const tableBody = document.getElementById("table-body");
+
+        tableBody.innerHTML = "";
+
+        //think the way I'm gonna do this is get transactions by user ID (HOW?)
+        //then loop through all it gives me
+        //sort from most recent to least recent if it's not already in that form
+    }
 })
