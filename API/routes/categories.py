@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from API.db import get_db
-from API.models import Category
+from API.models import Category, User
+import os
 
 router = APIRouter(prefix="/categories", tags=["categories"])
 
@@ -10,38 +11,68 @@ class CategoryCreate(BaseModel):
     name: str
     type: str  # "income" or "expense" | "need" | "want" | "savings_debt"
 
+def get_current_user() -> User:
+    # Placeholder for actual authentication logic
+    raise HTTPException(status_code=401, detail="Not authenticated")
+
 @router.post("/", response_model=dict)
-def create_category(category: CategoryCreate, db: Session = Depends(get_db)):
-    # optional: prevent duplpicates on name
-    existing = db.query(Category).filter(Category.name == category.name).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Category already exists")
-    new_category = Category(
-        name=category.name,
-        type=category.type
+def create_category(
+    payload: CategoryCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    # prevent duplicate name for this user
+    existing = (
+        db.query(Category)
+        .filter(
+            Category.name == payload.name,
+            Category.user_id == current_user.id,
+        )
+        .first()
     )
-    db.add(new_category)
+    if existing:
+        raise HTTPException(status_code=400, detail="You already have this category")
+
+    cat = Category(
+        name=payload.name,
+        type=payload.type,
+        is_default=False,
+        user_id=current_user.id,
+    )
+    db.add(cat)
     db.commit()
-    db.refresh(new_category)
-    return {"message": "Category created successfully", "category": new_category}
+    db.refresh(cat)
 
     return {
-        "id": new_category.id,
-        "name": new_category.name,
-        "type": new_category.type,
-        "is_default": new_category.is_default
+        "id": cat.id,
+        "name": cat.name,
+        "type": cat.type,
+        "is_default": cat.is_default,
+        "user_id": cat.user_id,
     }
 
-@router.get("/", response_model=list[CategoryCreate])
-def get_categories(db: Session = Depends(get_db)):
-    categories = db.query(Category).order_by(Category.name).all()
+@router.get("/", response_model=list[dict])
+def list_categories(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    cats = (
+        db.query(Category)
+        .filter(
+            (Category.is_default == True) |  # global
+            (Category.user_id == current_user.id)  # this user's customs
+        )
+        .order_by(Category.name)
+        .all()
+    )
+
     return [
         {
-            "id": category.id,
-            "name": category.name,
-            "type": category.type,
-            "is_default": category.is_default
+            "id": c.id,
+            "name": c.name,
+            "type": c.type,
+            "is_default": c.is_default,
+            "user_id": c.user_id,
         }
-        for category in categories
+        for c in cats
     ]
-
