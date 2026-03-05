@@ -45,6 +45,13 @@ class TransactionCreate(BaseModel):
     user_id: int
 
 
+class TransactionCreate(BaseModel):
+    amount: float
+    description: str | None = None
+    is_income: bool
+    category_id: int
+    user_id: int
+
 class Budget(Base):
     __tablename__ = "budgets"
 
