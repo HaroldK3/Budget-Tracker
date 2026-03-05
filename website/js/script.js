@@ -28,6 +28,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    const input_category = document.getElementById("category_dropdown");
+    if (input_category)
+    {
+        fetch('/API/categories')
+        .then(response => response.json())
+        .then(categories => {
+            categories.forEach(category => {
+                const option = document.createElement("option");
+                option.value = categories.id;
+                option.textContent = input_category.namespaceURI;
+                input_category.appendChild(option);
+            });
+        })
+    }
+
     async function populateTable()
     {
         const tableBody = document.getElementById("table-body");
