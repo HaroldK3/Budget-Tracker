@@ -1,12 +1,12 @@
-Detailed design
-Overall structure
+#Detailed design
+##Overall structure
     •	Backend framework: FastAPI for REST API endpoints (auth, transactions, budgets, categories).
     •	ORM & DB: SQLAlchemy models mapped to a SQLite database (budget_app.db), created and seeded via API/create_db.py.
     •	Frontend: Static HTML pages (index.html, login.html, edit.html, visual.html) with CSS/JS that call your API using fetch.image.jpg
 The UML you drew is implemented directly in API/models.py as tables and relationships.Updated_AGAIN_UML.drawio.jpg
 Core data model
 
-All major features hang off the User table.Updated_AGAIN_UML.drawio.jpg
+##All major features hang off the User table.Updated_AGAIN_UML.drawio.jpg
     •	User
     •	Fields: id, name, email, password_hash.
     •	Relationships: goals, budgets, recurring_payments, transactions (and optionally categories).
@@ -19,7 +19,7 @@ All major features hang off the User table.Updated_AGAIN_UML.drawio.jpg
     •	Relationships: transactions, budget_items (and optionally user).
     •	Default rows (Housing, Groceries, Dining Out, etc.) are seeded for everyone; custom categories can be created via the API.
 
-Budget & BudgetItem
+##Budget & BudgetItem
     •	Budget: id, month, year, total_amt_planned, user_id.
     •	BudgetItem: id, planned_amt, budget_id, category_id.
     •	Design: one budget per user per month/year; many budget items, each tied to a category.Updated_AGAIN_UML.drawio.jpg
@@ -31,7 +31,7 @@ Budget & BudgetItem
     •	Reminder: id, send_date, message, is_sent, recurring_payment_id.
     •	UML adds methods like generateNextOccurrence() and createUpcomingReminders() for future scheduling logic.Updated_AGAIN_UML.drawio.jpg
 
-Services & logic layer
+##Services & logic layer
 The UML defines a service layer that will sit on top of the models.Updated_AGAIN_UML.drawio.jpg
     •	AuthService
     •	Methods: register(email, string, password), login(email, password), logout(user), changePassword(user, oldPassword, newPassword).
@@ -45,7 +45,7 @@ The UML defines a service layer that will sit on top of the models.Updated_AGAIN
     •	These functions use Transaction, Budget, and BudgetItem to implement “Total Money = Earned − Expense” and future estimates.HistoryUpdated_AGAIN_UML.drawio.jpg
     This gives you a clean separation: models handle persistence; services handle financial calculations and business rules.
 
-API design
+##API design
     •	Database setup: API/create_db.py uses engine and Base from API/db.py to create_all() tables and then seed default categories.image.jpg
     •	DB access: API/db.py defines Sessionlocal and get_db() dependency for FastAPI routes.
     •	Category routes:
@@ -53,7 +53,7 @@ API design
     •	POST /categories/ → accept JSON {name, type} and create a new category with is_default = False (and optional user_id if you wire auth).
     •	Other routes: similar patterns for transactions, budgets, login, etc., using Pydantic models to define request/response bodies.
     The frontend team calls these endpoints to list and create categories, then passes category_id back when creating transactions or budget items.
-Frontend interaction
+##Frontend interaction
     •	On page load, JS calls GET /categories/ and fills a <select> with all categories.
     •	When adding a transaction or budget item, the selected category_id is sent to the backend.
     •	For custom categories, a small form hit POST /categories/, then inserts the new option into the dropdown so the user can use it immediately.
