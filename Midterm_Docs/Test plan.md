@@ -1,4 +1,4 @@
-## Test Plan
+# Test Plan
 
 The goal of testing for the Budget Tracker API is to ensure that all endpoints function correctly, data is stored and retrieved accurately, and the application handles invalid input or errors properly. Testing focuses on validating the functionality of user and transaction management features.
 
@@ -12,8 +12,8 @@ Transaction retrieval by user
 Balance calculation
 Error handling for invalid or missing data
 
-## Tests Performed and Test Types
-# Functional Testing
+# Tests Performed and Test Types
+## Functional Testing
 Functional testing was performed to verify that each API endpoint performs its intended operation.
 #Tests included:
 Creating a new user
@@ -25,15 +25,15 @@ Expected results were verified through the returned JSON responses and database 
 Integration Testing
 Integration testing ensured that the API, database, and ORM (SQLAlchemy) work together correctly.
 
-# Examples:
+## Examples:
 Creating a transaction correctly inserts data into the database.
 Retrieving transactions returns records associated with the correct user.
 Balance calculations correctly aggregate transaction values.
 
-## API Endpoint Testing
+# API Endpoint Testing
 Endpoints were tested using FastAPI's Swagger UI (/docs) interface.
 
-# Example endpoints tested/Method	Purpose:
+## Example endpoints tested/Method	Purpose:
 POST   /user/login                         | Logs a user in
 POST   /user/create_user                   | Creates a new user
 GET    /transaction/balance                | Gets a balance from a user
@@ -44,7 +44,7 @@ DELETE /transaction/user_id/transaction_id | Deletes a specific transaction
 
 Each endpoint was tested with valid and invalid inputs to confirm correct behavior.
 
-## Analysis Report
+# Analysis Report
 
 Testing confirmed that the API successfully handles core functionality including user creation, transaction storage, and balance calculations. The database integration with SQLite and SQLAlchemy performed reliably, with data correctly inserted and retrieved through API endpoints.
 
