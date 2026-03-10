@@ -15,7 +15,7 @@ class User(Base):
     budgets = relationship("Budget", back_populates="user")
     recurring_payments = relationship("RecurringPayment", back_populates="user")
     transactions = relationship("Transaction", back_populates="user")
-    categories = relationship("Category", back_populates="users")
+    categories = relationship("Category", back_populates="user")
 
 class UserCreate(BaseModel):
     email: str
