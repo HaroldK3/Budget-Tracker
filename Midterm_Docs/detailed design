@@ -54,6 +54,6 @@ API design
     •	Other routes: similar patterns for transactions, budgets, login, etc., using Pydantic models to define request/response bodies.
     The frontend team calls these endpoints to list and create categories, then passes category_id back when creating transactions or budget items.
 Frontend interaction
-•	On page load, JS calls GET /categories/ and fills a <select> with all categories.
-•	When adding a transaction or budget item, the selected category_id is sent to the backend.
-•	For custom categories, a small form hit POST /categories/, then inserts the new option into the dropdown so the user can use it immediately.
+    •	On page load, JS calls GET /categories/ and fills a <select> with all categories.
+    •	When adding a transaction or budget item, the selected category_id is sent to the backend.
+    •	For custom categories, a small form hit POST /categories/, then inserts the new option into the dropdown so the user can use it immediately.
