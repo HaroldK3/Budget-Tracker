@@ -7,58 +7,58 @@ Testing was performed using manual API testing through Swagger UI and HTTP reque
 The main components tested include:
 
 User creation
-Transaction creation
+Transaction creation  
 
-Transaction retrieval by user
+Transaction retrieval by user  
 
-Balance calculation
+Balance calculation  
 
-Error handling for invalid or missing data
+Error handling for invalid or missing data  
 
 # Tests Performed and Test Types
 ## Functional Testing
 Functional testing was performed to verify that each API endpoint performs its intended operation.
 #Tests included:
-Creating a new user
+Creating a new user  
 
-Creating income transactions
+Creating income transactions  
 
-Creating expense transactions
+Creating expense transactions  
 
-Retrieving transactions for a specific user
+Retrieving transactions for a specific user  
 
-Calculating the user's balance
+Calculating the user's balance  
 
-Expected results were verified through the returned JSON responses and database updates.
+Expected results were verified through the returned JSON responses and database updates.  
 
-Integration Testing
+Integration Testing  
 
-Integration testing ensured that the API, database, and ORM (SQLAlchemy) work together correctly.
+Integration testing ensured that the API, database, and ORM (SQLAlchemy) work together correctly.  
 
 ## Examples:
-Creating a transaction correctly inserts data into the database.
+Creating a transaction correctly inserts data into the database.  
 
-Retrieving transactions returns records associated with the correct user.
+Retrieving transactions returns records associated with the correct user.  
 
-Balance calculations correctly aggregate transaction values.
+Balance calculations correctly aggregate transaction values.  
 
 # API Endpoint Testing
-Endpoints were tested using FastAPI's Swagger UI (/docs) interface.
+Endpoints were tested using FastAPI's Swagger UI (/docs) interface.  
 
 ## Example endpoints tested/Method	Purpose:
-POST   /user/login                         | Logs a user in
+POST   /user/login                         | Logs a user in  
 
-POST   /user/create_user                   | Creates a new user
+POST   /user/create_user                   | Creates a new user  
 
-GET    /transaction/balance                | Gets a balance from a user
+GET    /transaction/balance                | Gets a balance from a user  
 
-POST   /transaction/add_transaction        | Creates a transaction
+POST   /transaction/add_transaction        | Creates a transaction  
 
-GET    /transaction/user_id                | Gets all transactions from a user
+GET    /transaction/user_id                | Gets all transactions from a user  
 
-GET    /transaction/user_id/type/is_income | Finds a specific transaction based on paramaters
+GET    /transaction/user_id/type/is_income | Finds a specific transaction based on paramaters  
 
-DELETE /transaction/user_id/transaction_id | Deletes a specific transaction
+DELETE /transaction/user_id/transaction_id | Deletes a specific transaction  
 
 Each endpoint was tested with valid and invalid inputs to confirm correct behavior.
 
