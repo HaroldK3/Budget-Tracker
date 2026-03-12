@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from API.db import Base, engine
 from API import models
-from API.routes import user, transaction
+from API.routes import categories, user, transaction
 
 app = FastAPI()
 
@@ -19,6 +19,7 @@ app.add_middleware(  #type: ignore bc pylance hates me
 
 app.include_router(user.router)
 app.include_router(transaction.router)
+app.include_router(categories.router)
 
 
 @app.get("/")

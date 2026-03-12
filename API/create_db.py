@@ -41,7 +41,8 @@ def seed_categories():
                 db.add(Category(
                     name=c["name"],
                     type=c["type"],
-                    is_default=True
+                    is_default=True,
+                    user_id=None
                 ))
             db.commit()
             print("Default categories seeded.")
