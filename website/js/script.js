@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
-            const isLoggedIn = localStorage.getItem("isLoggedIn");
 
             const url = new URL("http://127.0.0.1:8000/user/login");
             url.searchParams.append("email", email);
@@ -21,15 +20,29 @@ document.addEventListener("DOMContentLoaded", () => {
             if(!res.ok)
             {
                 alert(data.detail || "Login failed");
-                console.log(isLoggedIn);
+                localStorage.setItem("isLoggedIn", "false")
+                console.log(localStorage.getItem("isLoggedIn"));
                 return;
             }
             
             localStorage.setItem("isLoggedIn", "true")
-            console.log(isLoggedIn);
+            console.log(localStorage.getItem("isLoggedIn"));
             alert("Login successful!");
             window.location.href = "index.html";
+            console.log(localStorage.getItem("isLoggedIn"));
         });
+    }
+
+    //logout logic
+
+    document.getElementById("logoutButton").addEventListener("click", logout)
+
+    function logout()
+    {
+        localStorage.setItem("isLoggedIn", "false")
+        alert("You have been logged out.");
+        window.location.href = "login.html";
+        console.log(localStorage.getItem("isLoggedIn"));        
     }
 
     const input_category = document.getElementById("category_dropdown");
@@ -47,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
+    //auto-populating table that pulls and displays a user's transactions
     async function populateTable()
     {
         const tableBody = document.getElementById("table-body");
