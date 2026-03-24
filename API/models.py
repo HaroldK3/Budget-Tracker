@@ -15,7 +15,7 @@ class User(Base):
     budgets = relationship("Budget", back_populates="user")
     recurring_payments = relationship("RecurringPayment", back_populates="user")
     transactions = relationship("Transaction", back_populates="user")
-    categories = relationship("Category", back_populates="users")
+    categories = relationship("Category", back_populates="user")
 
 class UserCreate(BaseModel):
     email: str
@@ -44,6 +44,13 @@ class TransactionCreate(BaseModel):
     category_id: int
     user_id: int
 
+
+class TransactionCreate(BaseModel):
+    amount: float
+    description: str | None = None
+    is_income: bool
+    category_id: int
+    user_id: int
 
 class Budget(Base):
     __tablename__ = "budgets"

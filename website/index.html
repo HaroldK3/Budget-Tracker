@@ -2,20 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Home</title>
     <link rel="icon" href="">
     <link rel="stylesheet" href="css/style.css">
-
-     <!-- .html
-        -        Author:           
-        -        Date:               
-        -        Last Revised:     
-        -        Description:      
-    -->
-
 </head>
 <body>
     <script src="js/script.js" defer></script>
-    <!--could use async instead of defer?-->
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="edit.html">Expenses</a></li> <!--this one will allow user to add/edit expenses-->
+            <li><a href="visual.html">Visuals</a></li>
+            <button type="button" id="logoutButton">Log Out</button> <!--style this to be moved to the very right-->
+        </ul>
+    </nav>
+    <h1>Hello, User!</h1>
+    <h2>Welcome to the Turtle Budget Tracker.</h2>
+    <hr>
+    <h2>Your budget:</h2>
+        <table border="1" id="budget-info">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Date of Transaction</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!--Data inserts here-->
+            </tbody>
+        </table>
 </body>
 </html>
