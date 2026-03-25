@@ -11,22 +11,23 @@ class CategoryCreate(BaseModel):
     name: str
     type: str  # "income" or "expense" | "need" | "want" | "savings_debt"
 
-def get_current_user() -> User:
+#def get_current_user() -> User:
     # Placeholder for actual authentication logic
-    raise HTTPException(status_code=401, detail="Not authenticated")
-
-@router.post("/", response_model=dict)
+    #raise HTTPException(status_code=401, detail="Not authenticated")
+    #if user_id or null
+    
+@router.post("/categories/", response_model=dict)
 def create_category(
     payload: CategoryCreate,
+    user_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    
 ):
     # prevent duplicate name for this user
     existing = (
         db.query(Category)
         .filter(
-            Category.name == payload.name,
-            Category.user_id == current_user.id,
+            Category.name == payload.name, Category.user_id == user_id
         )
         .first()
     )
@@ -37,7 +38,7 @@ def create_category(
         name=payload.name,
         type=payload.type,
         is_default=False,
-        user_id=current_user.id,
+        user_id=user_id,
     )
     db.add(cat)
     db.commit()
@@ -51,17 +52,20 @@ def create_category(
         "user_id": cat.user_id,
     }
 
-@router.get("/", response_model=list[dict])
+@router.get("/categories/", response_model=list[dict])
 def list_categories(
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
-):
+   user_id: int | None = None, db: Session = Depends(get_db)):
+    query = db.query(Category)
+    
+
+    if user_id is not None:
+        query = query.filter(
+            (Category.is_default == True) |
+            (Category.user_id == user_id)
+        )
+
     cats = (
         db.query(Category)
-        .filter(
-            (Category.is_default == True) |  # global
-            (Category.user_id == current_user.id)  # this user's customs
-        )
         .order_by(Category.name)
         .all()
     )
