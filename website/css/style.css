@@ -5,14 +5,14 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #0c0a67;
+  background-color: #0a670a;
   display: flex;
   /*might not use this
   ;justify-content: center; */
 }
 
 ul li {
-  float: left;
+  float: center;
 }
 
 ul li a {
@@ -29,11 +29,13 @@ ul li a:hover {
 
 
 body {
-    background: #f9f9f9;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 18px;
-    margin: 0;
+  background-image: url("../images/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 100px;
+  padding : 20px, 5px;
 }
+
 nav{
     display: block;
     background: #000;
@@ -44,6 +46,7 @@ nav{
     z-index: 5;
 
 }
+
 nav a{
     display: block;
     float: left;
@@ -56,6 +59,8 @@ nav a{
     text-align: center;
 
 }
+
+
  nav a:hover{
     color: #f00;
     border-bottom: #f00;
@@ -104,3 +109,53 @@ nav a{
   padding: 14px 16px;
   text-decoration: none;
  }
+
+ div.footer{
+    background: #000;
+    color: #f9f9f9;
+    text-align: center;
+    padding: 1em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+ }
+form{
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+    padding: 1em;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 10px 10px 10px #888;
+}
+title{
+      text-align: center;
+}
+
+/* Background overlay */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+/* Popup box */
+.popup-content {
+    background: white;
+    width: 300px;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Close button */
+.close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
