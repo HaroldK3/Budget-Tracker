@@ -1,0 +1,37 @@
+name: Run tests
+
+on:
+    push:
+    pull_request:
+
+jobs: 
+    test:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                python-version: [3.9, 3.9.13, 3.10, 3.11]
+
+        steps: 
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: ${{ matrix.python-version }}
+                
+
+            - name: Install dependencies
+              run: 
+                    pip install uvicorn
+                    pip install fastapi
+                    pip install sqlalchemy
+                    pip install passlib
+                    pip install werkzeug
+                    pip install pydantic
+                    pip install pytest
+
+            - name: Run tests
+              run: pytest API/tests
+
