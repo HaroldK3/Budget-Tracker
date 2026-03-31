@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const res = await fetch(url, { method: "POST" });
             const data = await res.json();
-
+            
             if(!res.ok)
             {
                 alert(data.detail || "Login failed");
@@ -26,23 +26,35 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             
             localStorage.setItem("isLoggedIn", "true")
+            localStorage.setItem("currentUserID", data.user_id)
             console.log(localStorage.getItem("isLoggedIn"));
-            alert("Login successful!");
+            console.log(localStorage.getItem("currentUserID"));
+            alert("Login successful! " + data.message);
             window.location.href = "index.html";
             console.log(localStorage.getItem("isLoggedIn"));
+            console.log(localStorage.getItem("currentUserID"));
         });
     }
 
     //logout logic
 
-    document.getElementById("logoutButton").addEventListener("click", logout)
+    document.getElementById("logout-button").addEventListener("click", logout)
 
     function logout()
     {
         localStorage.setItem("isLoggedIn", "false")
+        localStorage.setItem("currentUserID", "null")
         alert("You have been logged out.");
         window.location.href = "login.html";
-        console.log(localStorage.getItem("isLoggedIn"));        
+        console.log(localStorage.getItem("isLoggedIn"));   
+        console.log(localStorage.getItem("currentUserID"));     
+    }
+
+    //welcome message logic
+    const welcome_message = document.getElementById("welcome-message");
+    if(!Object.is(localStorage.getItem("currentUserID"), "null"))
+    {
+        welcome_message.innerHTML = `Hello, ${localStorage.getItem("currentUserID")}!`;
     }
 
     const input_category = document.getElementById("category_dropdown");
