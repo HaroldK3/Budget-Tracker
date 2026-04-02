@@ -159,3 +159,15 @@ title{
     font-size: 20px;
     cursor: pointer;
 }
+
+pie {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(
+         #4CAF50 0% 25%, /* Green for Income */
+         #F44336 25% 50%, /* Red for Expenses */
+         #2196F3 50% 75%, /* Blue for Savings */
+         #FFC107 75% 100% /* Amber for Investments */
+      );
+}
