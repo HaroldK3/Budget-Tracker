@@ -15,7 +15,6 @@ class User(Base):
     budgets = relationship("Budget", back_populates="user")
     recurring_payments = relationship("RecurringPayment", back_populates="user")
     transactions = relationship("Transaction", back_populates="user")
-    categories = relationship("Category", back_populates="user")
 
 class UserCreate(BaseModel):
     email: str
@@ -39,14 +38,6 @@ class Transaction(Base):
 
 class TransactionCreate(BaseModel):
     amount: float
-    description: str
-    is_income: bool
-    category_id: int
-    user_id: int
-
-
-class TransactionCreate(BaseModel):
-    amount: float
     description: str | None = None
     is_income: bool
     category_id: int
@@ -56,20 +47,20 @@ class Budget(Base):
     __tablename__ = "budgets"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String, nullable=False)
     created_at = Column(DateTime)
 
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="budgets")
-    items = relationship("BudgetItem", back_populates="budget")
+    items = relationship("BudgetCategory", back_populates="budget")
 
 class BudgetCreate(BaseModel):
     name: str
     user_id: int
 
 class BudgetCategory(Base):
-    __tablename__ = "budget_items"
+    __tablename__ = "budget_categories"
 
     id = Column(Integer, primary_key=True)
     category_name = Column(String)
@@ -93,10 +84,7 @@ class Category(Base):
     type = Column(String)
     is_default = Column(Boolean)
 
-    user_id = Column(Integer, ForeignKey("users.id"))
-
-    user = relationship("User", back_populates="categories")
-    budget_items = relationship("BudgetItem", back_populates="category")
+    ##budget_categories = relationship("BudgetCategory", back_populates="category")
     transactions = relationship("Transaction", back_populates="category")
 
 
