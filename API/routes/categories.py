@@ -54,29 +54,23 @@ def create_category(
 
 @router.get("/categories/", response_model=list[dict])
 def list_categories(
-   user_id: int | None = None, db: Session = Depends(get_db)):
+   user_id: int, db: Session = Depends(get_db)):
     query = db.query(Category)
     
-
-    if user_id is not None:
-        query = query.filter(
-            (Category.is_default == True) |
-            (Category.user_id == user_id)
-        )
-
     cats = (
         db.query(Category)
-        .order_by(Category.name)
-        .all()
+        .filter(
+            (Category.user_id == user_id) | (Category.is_default.is_(True))
+        ).order_by(Category.name).all()
     )
 
     return [
         {
-            "id": c.id,
-            "name": c.name,
-            "type": c.type,
-            "is_default": c.is_default,
-            "user_id": c.user_id,
+            "id": cat.id,
+            "name": cat.name,
+            "type": cat.type,
+            "is_default": cat.is_default,
+            "user_id": cat.user_id,
         }
-        for c in cats
+        for cat in cats
     ]

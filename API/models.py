@@ -56,27 +56,33 @@ class Budget(Base):
     __tablename__ = "budgets"
 
     id = Column(Integer, primary_key=True)
-    month = Column(Integer)
-    year = Column(Integer)
-    total_amt_planned = Column(DECIMAL)
+    name = Column(String)
+    created_at = Column(DateTime)
 
     user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="budgets")
     items = relationship("BudgetItem", back_populates="budget")
 
+class BudgetCreate(BaseModel):
+    name: str
+    user_id: int
 
-class BudgetItem(Base):
+class BudgetCategory(Base):
     __tablename__ = "budget_items"
 
     id = Column(Integer, primary_key=True)
-    planned_amt = Column(DECIMAL)
+    category_name = Column(String)
+    percentage = Column(DECIMAL)
 
     budget_id = Column(Integer, ForeignKey("budgets.id"))
-    category_id = Column(Integer, ForeignKey("categories.id"))
 
     budget = relationship("Budget", back_populates="items")
-    category = relationship("Category", back_populates="budget_items")
+
+class BudgetCategoryCreate(BaseModel):
+    category_name: str
+    percentage: float
+    budget_id: int
 
 
 class Category(Base):
