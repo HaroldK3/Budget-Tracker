@@ -16,7 +16,8 @@ class CategoryCreate(BaseModel):
     #raise HTTPException(status_code=401, detail="Not authenticated")
     #if user_id or null
     
-@router.post("/categories/", response_model=dict)
+#removed "/categories/" so now it is just "/"
+@router.post("/", response_model=dict)
 def create_category(
     payload: CategoryCreate,
     user_id: int,
@@ -52,7 +53,7 @@ def create_category(
         "user_id": cat.user_id,
     }
 
-@router.get("/categories/", response_model=list[dict])
+@router.get("/", response_model=list[dict])
 def list_categories(
    user_id: int | None = None, db: Session = Depends(get_db)):
     query = db.query(Category)
