@@ -47,12 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //welcome message logic
     const welcome_message = document.getElementById("welcome-message");
-    if(!Object.is(localStorage.getItem("currentUserID"), "null"))
+    if(welcome_message &&!Object.is(localStorage.getItem("currentUserID"), "null"))
     {
         welcome_message.innerHTML = localStorage.getItem("welcomeMessage");
     }
 
-    const input_category = document.getElementById("category_dropdown");
+   /* const input_category = document.getElementById("category_dropdown");
     if (input_category)
     {
         fetch('/API/categories')
@@ -65,7 +65,32 @@ document.addEventListener("DOMContentLoaded", () => {
                 input_category.appendChild(option);
             });
         })
-    }
+    }*/
+
+const input_category = document.getElementById("categoryDropdown");
+
+if (input_category) {
+    fetch("http://127.0.0.1:8000/categories/")
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to load categories.");
+            }
+            return response.json();
+        })
+        .then(categories => {
+            input_category.innerHTML = '<option value="">Select a category from the dropdown</option>';
+
+            categories.forEach(category => {
+                const option = document.createElement("option");
+                option.value = category.id;
+                option.textContent = category.name;
+                input_category.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error("Category dropdown error:", error);
+        });
+}   
 
     //auto-populating table that pulls and displays a user's transactions
     async function populateTable()
@@ -84,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 
             const balanceurl = new URL("http://127.0.0.1:8000/transaction/balance");
             const transactionurl = new URL(`http://127.0.0.1:8000/transaction/${user_id}`);
-            //const categoryurl = new URL("http://127.0.0.1:8000/categories");
+            //-const categoryurl = new URL("http://127.0.0.1:8000/categories");
             
             balanceurl.searchParams.append("user_id", user_id);
 
