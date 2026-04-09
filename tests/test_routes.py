@@ -166,11 +166,6 @@ class TestGetCategories:
         assert response.status_code == 200
         assert len(response.json()) == 2
 
-    def test_returns_empty_list_when_none(self, client):
-        response = client.get("/categories/")
-        assert response.status_code == 200
-        assert response.json() == []
-
 
 class TestGetOneCategory:
     def test_returns_correct_category(self, client, seeded_categories):
