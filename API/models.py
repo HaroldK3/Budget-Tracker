@@ -83,6 +83,7 @@ class Category(Base):
     name = Column(String)
     type = Column(String)
     is_default = Column(Boolean)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
 
     ##budget_categories = relationship("BudgetCategory", back_populates="category")
     transactions = relationship("Transaction", back_populates="category")
