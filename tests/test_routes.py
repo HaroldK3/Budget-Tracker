@@ -16,7 +16,7 @@ from pydantic import BaseModel
 
 # ── File-based SQLite so all connections share the same DB ──────────────────
 
-TEST_DB_PATH = "./test.db"
+TEST_DB_PATH = "/tmp/test_budget.db./test.db"
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{TEST_DB_PATH}"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
