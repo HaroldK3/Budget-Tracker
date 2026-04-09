@@ -36,8 +36,6 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     name          = Column(String, nullable=False)
 
-Base.metadata.create_all(bind=engine)
-
 
 # ── Pydantic schema ─────────────────────────────────────────────────────────
 
@@ -47,7 +45,7 @@ class UserCreate(BaseModel):
     name:     str
 
 
-# ── Test DB override ────────────────────────────────────────────────────────
+# ── Test DB session ─────────────────────────────────────────────────────────
 
 def get_db():
     pass
@@ -112,9 +110,11 @@ app.dependency_overrides[get_db] = override_get_db
 
 @pytest.fixture(autouse=True)
 def reset_db():
+    # Drop then recreate tables before every test
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     yield
+    Base.metadata.drop_all(bind=engine)
 
 @pytest.fixture()
 def client():
