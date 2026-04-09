@@ -112,12 +112,13 @@ app.dependency_overrides[get_db] = override_get_db
 
 @pytest.fixture(autouse=True)
 def reset_db():
-    # Remove any leftover DB file, then create fresh tables
     if os.path.exists(TEST_DB_PATH):
         os.remove(TEST_DB_PATH)
+    engine.dispose()  # ← close all stale connections
     Base.metadata.create_all(bind=engine)
     yield
     Base.metadata.drop_all(bind=engine)
+    engine.dispose()
     if os.path.exists(TEST_DB_PATH):
         os.remove(TEST_DB_PATH)
 
