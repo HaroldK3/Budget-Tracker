@@ -5,6 +5,7 @@ Run:
     pytest tests/test_routes.py -v
 """
 
+import os
 import pytest
 from fastapi import FastAPI, APIRouter, Depends, HTTPException
 from fastapi.testclient import TestClient
@@ -13,9 +14,10 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from passlib.context import CryptContext
 from pydantic import BaseModel
 
-# ── In-memory SQLite setup ──────────────────────────────────────────────────
+# ── File-based SQLite so all connections share the same DB ──────────────────
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+TEST_DB_PATH = "./test.db"
+SQLALCHEMY_DATABASE_URL = f"sqlite:///{TEST_DB_PATH}"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
@@ -110,11 +112,14 @@ app.dependency_overrides[get_db] = override_get_db
 
 @pytest.fixture(autouse=True)
 def reset_db():
-    # Drop then recreate tables before every test
+    # Create fresh tables before each test
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     yield
+    # Clean up after each test
     Base.metadata.drop_all(bind=engine)
+    if os.path.exists(TEST_DB_PATH):
+        os.remove(TEST_DB_PATH)
 
 @pytest.fixture()
 def client():
