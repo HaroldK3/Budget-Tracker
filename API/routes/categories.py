@@ -65,11 +65,7 @@ def list_categories(
             (Category.user_id == user_id)
         )
 
-    cats = (
-        db.query(Category)
-        .order_by(Category.name)
-        .all()
-    )
+    cats = query.order_by(Category.name).all()
 
     return [
         {
