@@ -14,9 +14,9 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from passlib.context import CryptContext
 from pydantic import BaseModel
 
-# ── File-based SQLite so all connections share the same DB ──────────────────
+# ── Use /tmp so it's always writable (locally and in CI) ───────────────────
 
-TEST_DB_PATH = "/tmp/test_budget.db./test.db"
+TEST_DB_PATH = "/tmp/test_budget.db"
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{TEST_DB_PATH}"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -112,11 +112,11 @@ app.dependency_overrides[get_db] = override_get_db
 
 @pytest.fixture(autouse=True)
 def reset_db():
-    # Create fresh tables before each test
-    Base.metadata.drop_all(bind=engine)
+    # Remove any leftover DB file, then create fresh tables
+    if os.path.exists(TEST_DB_PATH):
+        os.remove(TEST_DB_PATH)
     Base.metadata.create_all(bind=engine)
     yield
-    # Clean up after each test
     Base.metadata.drop_all(bind=engine)
     if os.path.exists(TEST_DB_PATH):
         os.remove(TEST_DB_PATH)
