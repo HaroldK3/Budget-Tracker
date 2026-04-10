@@ -152,40 +152,28 @@ if (input_category) {
 
     //Add transactions
     const addTransactionButton = document.getElementById("addTransactionButton");
-    if (addTransactionButton)
-    {
+    if (addTransactionButton) {
         addTransactionButton.addEventListener("click", async () => {
-            //const user_id = 1;
+            const user_id = localStorage.getItem("currentUserID"); // ← make sure this is here
 
             const amountInput = document.getElementById("amount").value.trim();
             const description = document.getElementById("description").value.trim();
             const categoryId = document.getElementById("category_dropdown").value;
             const isIncomeRadio = document.querySelector('input[name="agreement"]:checked');
 
-            if (!amountInput || isNaN(amountInput)) {
-                alert("Please enter a valid amount.");
-                return;
-            }
-            if (!categoryId) {
-                alert("Please select a category.");
-                return;
-            }
-            if (!isIncomeRadio) {
-                alert("Please indicate if this is income or an expense.");
-                return;
-            }
+            if (!amountInput || isNaN(amountInput)) { alert("Please enter a valid amount."); return; }
+            if (!categoryId) { alert("Please select a category."); return; }
+            if (!isIncomeRadio) { alert("Please indicate if this is income or an expense."); return; }
 
             const payload = {
                 amount: parseFloat(amountInput),
                 description: description,
                 is_income: isIncomeRadio.value === "yes",
                 category_id: parseInt(categoryId),
-                //user_id: user_id
+                user_id: parseInt(user_id)  // ← add this
             };
 
-            const url = new URL("http://127.0.0.1:8000/transaction/add_transaction");
-
-            const res = await fetch(url, {
+            const res = await fetch("http://127.0.0.1:8000/transaction/add_transaction", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
@@ -193,14 +181,16 @@ if (input_category) {
 
             const data = await res.json();
 
-            if (!res.ok)
-            {
-                alert(data.detail || "Failed to add transaction.");
+            if (!res.ok) {
+                // ← This is the [object Object] fix
+                const errorMsg = typeof data.detail === "string"
+                    ? data.detail
+                    : JSON.stringify(data.detail);
+                alert(errorMsg || "Failed to add transaction.");
                 return;
             }
 
             alert("Transaction added successfully!");
-
             document.getElementById("amount").value = "";
             document.getElementById("description").value = "";
             document.getElementById("category_dropdown").value = "";
@@ -209,6 +199,80 @@ if (input_category) {
             if (typeof populateTable === "function") populateTable();
         });
     }
+
+    // Populate delete dropdown
+async function populateDeleteDropdown() {
+    const dropdown = document.getElementById("delete_transaction_dropdown");
+    if (!dropdown) return;
+
+    const user_id = localStorage.getItem("currentUserID");
+    if (!user_id || user_id === "null") return;
+
+    try {
+        const res = await fetch(`http://127.0.0.1:8000/transaction/${user_id}`);
+        if (!res.ok) return;
+
+        const transactions = await res.json();
+
+        dropdown.innerHTML = '<option value="">Select a transaction to delete</option>';
+
+        transactions.forEach(transaction => {
+            const option = document.createElement("option");
+            option.value = transaction.id;
+
+            // Show enough info to identify the transaction
+            const sign = transaction.is_income ? "+" : "-";
+            const amount = transaction.amount.toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD"
+            });
+            const date = new Date(transaction.date).toLocaleDateString();
+            const desc = transaction.description || "No description";
+
+            option.textContent = `${date} | ${desc} | ${sign}${amount}`;
+            dropdown.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Failed to load transactions for delete dropdown:", error);
+    }
+}
+
+// Delete transaction button
+const deleteTransactionButton = document.getElementById("deleteTransactionButton");
+if (deleteTransactionButton) {
+    deleteTransactionButton.addEventListener("click", async () => {
+        const user_id = localStorage.getItem("currentUserID");
+        const dropdown = document.getElementById("delete_transaction_dropdown");
+        const transaction_id = dropdown.value;
+
+        if (!transaction_id) {
+            alert("Please select a transaction to delete.");
+            return;
+        }
+
+        if (!confirm("Are you sure you want to delete this transaction?")) return;
+
+        const res = await fetch(
+            `http://127.0.0.1:8000/transaction/${user_id}/${transaction_id}`,
+            { method: "DELETE" }
+        );
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            const errorMsg = typeof data.detail === "string"
+                ? data.detail
+                : JSON.stringify(data.detail);
+            alert(errorMsg || "Failed to delete transaction.");
+            return;
+        }
+
+        alert("Transaction deleted!");
+        populateDeleteDropdown(); // refresh the delete dropdown
+        populateTable();          // refresh the main table
+    });
+}
+
 
     //auto-populating table that pulls and displays a user's transactions
     async function populateTable()
@@ -300,4 +364,5 @@ if (input_category) {
     }
 
     populateTable(); //on index.html load
+    populateDeleteDropdown();
 });
