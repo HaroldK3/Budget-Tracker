@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*for nav bar */
 
 ul {
@@ -348,4 +349,178 @@ title{
 
 #budget-info {
     background-color: white;
+=======
+/*for nav bar */
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #0a670a;
+  display: flex;
+  /*might not use this
+  ;justify-content: center; */
+}
+
+ul li {
+  float: center;
+}
+
+ul li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+ul li a:hover {
+  background-color: #111111;
+}
+
+
+body {
+  background-image: url("../images/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 100px;
+  padding : 20px, 5px;
+}
+
+nav{
+    display: block;
+    background: #000;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    z-index: 5;
+
+}
+
+nav a{
+    display: block;
+    float: left;
+    margin-left: 10px;
+    color: #f9f9f9;
+    width: 150px;
+    text-decoration: none;
+    position: relative;
+    top: 20px;
+    text-align: center;
+
+}
+
+
+ nav a:hover{
+    color: #f00;
+    border-bottom: #f00;
+
+ }
+ div.container{
+    position: relative;
+    top: 3em;
+    margin: 20px auto;
+    max-width: 800px;
+    min-width: 320px;
+
+ }
+ div.inner{
+    box-shadow: 10px 10px 10px #888;
+    border-left: 1px solid #888;
+    border-top: 1px solid #888;
+    padding:5px;
+ }
+ h2{
+    margin-left: 2em;
+ }
+
+ p {
+    padding: 0 1em 0 1em;
+    text-indent: 2em;
+ }
+
+ .floatLeft{
+    display: block;
+    float: left;
+    height: 150px;
+    margin-right: 1em;
+ }
+ .floatRight{
+    display: block;
+    float: right;
+    height: 150px;
+    margin-left: 1em;
+ }
+
+ li{
+   display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+ }
+
+ div.footer{
+    background: #000;
+    color: #f9f9f9;
+    text-align: center;
+    padding: 1em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+ }
+form{
+    display: block;
+    margin: 0 auto;
+    width: 300px;
+    padding: 1em;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 10px 10px 10px #888;
+}
+title{
+      text-align: center;
+}
+
+/* Background overlay */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+/* Popup box */
+.popup-content {
+    background: white;
+    width: 300px;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Close button */
+.close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+pie {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: conic-gradient(
+         #4CAF50 0% 25%, /* Green for Income */
+         #F44336 25% 50%, /* Red for Expenses */
+         #2196F3 50% 75%, /* Blue for Savings */
+         #FFC107 75% 100% /* Amber for Investments */
+      );
+>>>>>>> origin/main
 }
