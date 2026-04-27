@@ -12,6 +12,9 @@
     -->
     <title>Popup Example</title>
     <link rel="stylesheet" href="style.css">
+     <!--- <script src="https://www.google.com/recaptcha/api.js" async defer></script> --->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="js/script.js" defer></script>
 
 </head>
 <body>
@@ -33,8 +36,8 @@
             By using this application, you acknowledge and agree to this disclaimer and accept full responsibility for your financial decisions.</p>
     </div>
  </div>
-
-<script src="script.js"></script>
+    <!---
+    <script src="script.js"></script>
     <form id="login-form">
         <label for="email">Email Address:</label><br>
         <input type="text" id="email" name="email"><br>
@@ -43,7 +46,19 @@
 
         <button type="submit">Login</button>
     </form>
+    -->
+    <form id="login-form">
+    <label for="email">Email Address:</label><br>
+    <input type="text" id="email" name="email"><br>
 
-    <script src="js/script.js" defer></script>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br>
+
+    <!-- ✅ reCAPTCHA widget -->
+    <div class="g-recaptcha" data-sitekey="6LdfvMUsAAAAAMJBE_jUylDaPGrJJ6e9YcMHVQZE"></div>
+
+    <button type="submit">Login</button>
+    
+</form>
 </body>
 </html>
