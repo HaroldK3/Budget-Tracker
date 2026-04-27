@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, or_
 from ..db import get_db
 from API.models import User, UserCreate, Budget, BudgetCreate, BudgetCategory, BudgetCategoryCreate
 from passlib.context import CryptContext #type: ignore
